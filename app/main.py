@@ -1,7 +1,7 @@
 """Entry points. Every route here is an attacker-controlled source."""
 from flask import Flask, request, render_template_string
 
-from app.services import reports, search, storage, mailer
+from app.services import reports, search, storage, mailer, exporter
 
 app = Flask(__name__)
 
@@ -47,3 +47,15 @@ def do_notify():
 def do_stats():
     # DECOY 2: a constant, never attacker-controlled, reaching the same sink as FLOW 1.
     return search.lookup_exact("daily")
+
+
+@app.route("/export")
+def do_export():
+    # FLOW 5 (cross-file, new on this branch)
+    return exporter.to_pdf(request.args.get("url", ""))
+
+
+@app.route("/export-safe")
+def do_export_safe():
+    # DECOY 4 (new on this branch)
+    return exporter.to_pdf_safe(request.args.get("url", ""))

@@ -1,0 +1,13 @@
+# Scan artefacts and probe scripts are not part of the fixture.
+out/
+*.py.bak
+/probe.py
+/probe2.py
+/depdiag.py
+/adv2.py
+/deps.py
+/ghflow.py
+/ghflow2.py
+/scan_probe.py
+/scope_probe.py
+/patch_probe.py
