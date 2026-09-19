@@ -1,0 +1,1 @@
+id,title,severity,cwe,cvss_score,cvss_vector,confidence,calibrated_confidence,verified,verification_score,verification_signals,externally_corroborated,corroborating_tools,grounded,reachability,has_concrete_poc,poc_demonstrated,poc_confidence_band,poc_confidence_score,poc_confidence_reason,poc_modality,poc_attempted,abstained,path,start_line,end_line,skill,stage,tags,remediation

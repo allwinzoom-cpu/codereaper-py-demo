@@ -1,0 +1,317 @@
+{
+  "application_id": "scan-b363fb384233473bbef5e832f823b6c4",
+  "backend_degraded": false,
+  "budget_exceeded": false,
+  "config_hash": "28b45d138370893550443e080e78e0bfcab8cf188f64b939e528fcdbdd863c64",
+  "coverage": {
+    "by_language": {
+      "Python": 1
+    },
+    "complete": true,
+    "coverage_pct": 100.0,
+    "inventory": {
+      "code_files": 1,
+      "code_languages": {
+        "Python": {
+          "files": 1,
+          "loc": 4,
+          "loc_pct": 100.0
+        }
+      },
+      "code_loc": 4,
+      "excluded": {
+        "binary_files": 0,
+        "data_markup_files": 0,
+        "data_markup_loc": 0
+      },
+      "frameworks": {
+        "Python": [
+          "Flask"
+        ]
+      },
+      "languages": {
+        "Python": {
+          "files": 1,
+          "loc": 4,
+          "loc_pct": 100.0
+        }
+      },
+      "total_files": 1,
+      "total_loc": 4
+    },
+    "skipped": {
+      "dupe_configs": 0,
+      "excluded": 0,
+      "non_source": 0,
+      "oversize": 0,
+      "symlinks": 0,
+      "truncated_by_limit": 0
+    },
+    "source_files_parsed": 1,
+    "total_bytes": 173
+  },
+  "dropped_count": 0,
+  "ended_at": "2026-09-19T19:25:13.940825Z",
+  "file_hashes": {},
+  "finding_count": 0,
+  "hallucination_metrics": {
+    "outcome_unverified": 0,
+    "raw_lens": 0,
+    "ungrounded_downgraded": 0,
+    "ungrounded_dropped": 0
+  },
+  "llm_usage": {
+    "by_provider": {},
+    "by_stage": {},
+    "cost_usd": 0,
+    "estimated_cost_models": [],
+    "reconciliation": {
+      "by_call_provider": 0,
+      "by_call_stage": 0,
+      "stage_reported": 0,
+      "stage_reporting_matches": true,
+      "unattributed": 0,
+      "views_agree": true
+    },
+    "requests": 0,
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "tokens_total": 0
+  },
+  "max_budget_usd": 0.0,
+  "max_wall_seconds": 10800.0,
+  "profile": "tier1",
+  "run_config": {
+    "enabled_backends": [
+      "bedrock",
+      "mock",
+      "ollama",
+      "openrouter"
+    ],
+    "gates": {
+      "platt_calibration": {
+        "confirm_at_or_above": 0.7,
+        "enabled": false,
+        "reject_below": 0.3
+      },
+      "s4b_grounding_strict": false,
+      "s8b_poc_strict": false,
+      "s8c_verify_strict": false,
+      "s8c_verify_threshold": 1,
+      "seeding": {
+        "enabled": false,
+        "max_seeds": 20
+      },
+      "voting": {
+        "enabled": false,
+        "quorum": 2,
+        "voters": []
+      }
+    },
+    "roles": {
+      "reporter": {
+        "max_retries": 3,
+        "max_tokens": 1024,
+        "model": "mock-fast",
+        "num_ctx": null,
+        "seed": null,
+        "temperature": 0.0,
+        "timeout": null,
+        "via": "mock"
+      },
+      "surveyor": {
+        "max_retries": 3,
+        "max_tokens": 1024,
+        "model": "mock-fast",
+        "num_ctx": null,
+        "seed": null,
+        "temperature": 0.0,
+        "timeout": null,
+        "via": "mock"
+      }
+    }
+  },
+  "scan_id": "scan-b363fb384233473bbef5e832f823b6c4",
+  "src_bytes": 173,
+  "src_loc": 4,
+  "stages": [
+    {
+      "artifacts": {
+        "structural_cache": "miss",
+        "structural_index": {
+          "files_indexed": 1,
+          "routes": [],
+          "secrets": [],
+          "sinks": [
+            {
+              "cwe": "CWE-78",
+              "kind": "subprocess_shell_true",
+              "line": 6,
+              "path": "app/services/cidemo.py",
+              "pattern_id": "sink",
+              "snippet": "    return subprocess.check_output(\"host \" + host, shell=True)"
+            }
+          ],
+          "sources": []
+        },
+        "structural_summary": {
+          "cross_file_flows": 0,
+          "files_indexed": 1,
+          "routes": 0,
+          "secrets": 0,
+          "sinks": 1,
+          "sources": 0,
+          "weak_sinks": 0
+        }
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.007472041994333267,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:25:13.857675Z",
+      "skill": "structural_index",
+      "stage_id": "s1b_structural",
+      "started_at": "2026-09-19T19:25:13.850188Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "calibration": {
+          "boosted": 0,
+          "calibrated": 0,
+          "reduced": 0
+        },
+        "confined_flows": [],
+        "confined_vetoed": 0,
+        "confined_vetoed_detail": [],
+        "lenses_skipped": [],
+        "off_inventory": 0,
+        "per_lens_count": {
+          "client_side": 0,
+          "deterministic": 0
+        },
+        "platt_calibration": {
+          "abstained": 0,
+          "fitted": false,
+          "n": 0
+        },
+        "self_consistency_samples": 1,
+        "taint_failed_files": 0,
+        "taint_failures": []
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.07568133398308419,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:25:13.933617Z",
+      "skill": "research_lenses",
+      "stage_id": "s4_research",
+      "started_at": "2026-09-19T19:25:13.857933Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "cvss_autofilled_count": 0,
+        "grounding_dropped_ids": [],
+        "grounding_report": {
+          "dropped": 0,
+          "grounded": 0,
+          "hallucinated_line": 0,
+          "hallucinated_path": 0,
+          "notes": [],
+          "weak_evidence": 0
+        },
+        "strict": false,
+        "systemic_sql_findings": 0,
+        "taint_proven_count": 0,
+        "taint_sanitized_count": 0
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.000441250012954697,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:25:13.934344Z",
+      "skill": "grounding_pass",
+      "stage_id": "s4b_grounding",
+      "started_at": "2026-09-19T19:25:13.933902Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "input_count": 0,
+        "output_count": 0,
+        "systemic_clusters": 0
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.00045337501796893775,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:25:13.934985Z",
+      "skill": "dedupe",
+      "stage_id": "s7_dedupe",
+      "started_at": "2026-09-19T19:25:13.934531Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "verification_metrics": {
+          "considered": 0,
+          "corroborated": 0,
+          "dropped": 0,
+          "strict": false,
+          "threshold": 1,
+          "two_key_capped": 0,
+          "ungrounded_absence_capped": 0,
+          "unverified": 0,
+          "verified": 0
+        }
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 1.837499439716339e-05,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:25:13.936309Z",
+      "skill": "outcome_verifier",
+      "stage_id": "s8c_verify",
+      "started_at": "2026-09-19T19:25:13.936290Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "_hallucination_metrics": {
+          "outcome_unverified": 0,
+          "raw_lens": 0,
+          "ungrounded_downgraded": 0,
+          "ungrounded_dropped": 0
+        },
+        "dropped_count": 0,
+        "finding_count": 0,
+        "report_md": "out-ci/repo_20260919T192513Z_report.md",
+        "report_sarif": "out-ci/repo_20260919T192513Z_report.sarif"
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.004301874985685572,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:25:13.940771Z",
+      "skill": "emit",
+      "stage_id": "s9_emit",
+      "started_at": "2026-09-19T19:25:13.936467Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "started_at": "2026-09-19T19:25:13.840976Z",
+  "target_repo": "/ws/repo",
+  "target_sha": "910b0879e9dac0e0396e3767b19c23a7487fa56e",
+  "time_exceeded": false,
+  "tool": "codereaper",
+  "total_cost_usd": 0.0,
+  "total_seconds": 0.092,
+  "version": "0.3.0"
+}
