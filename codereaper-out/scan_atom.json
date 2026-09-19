@@ -1,0 +1,59 @@
+{
+  "schema": "codereaper/scan_atom/v1",
+  "scan_id": "scan-177bdaeb01b2481da223475bbdbc573d",
+  "output_dir": "codereaper-out",
+  "assets": {
+    "trace": "codereaper-out/trace/spans.jsonl",
+    "okf_dir": "codereaper-out/kb"
+  },
+  "run_config": {
+    "roles": {
+      "surveyor": {
+        "via": "mock",
+        "model": "mock-fast",
+        "temperature": 0.0,
+        "max_tokens": 1024,
+        "timeout": null,
+        "max_retries": 3,
+        "seed": null,
+        "num_ctx": null
+      },
+      "reporter": {
+        "via": "mock",
+        "model": "mock-fast",
+        "temperature": 0.0,
+        "max_tokens": 1024,
+        "timeout": null,
+        "max_retries": 3,
+        "seed": null,
+        "num_ctx": null
+      }
+    },
+    "gates": {
+      "voting": {
+        "enabled": false,
+        "quorum": 2,
+        "voters": []
+      },
+      "s4b_grounding_strict": false,
+      "s8b_poc_strict": false,
+      "s8c_verify_strict": false,
+      "s8c_verify_threshold": 1,
+      "seeding": {
+        "enabled": false,
+        "max_seeds": 20
+      },
+      "platt_calibration": {
+        "enabled": false,
+        "reject_below": 0.3,
+        "confirm_at_or_above": 0.7
+      }
+    },
+    "enabled_backends": [
+      "bedrock",
+      "mock",
+      "ollama",
+      "openrouter"
+    ]
+  }
+}

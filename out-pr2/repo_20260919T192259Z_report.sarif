@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "codereaper",
+          "version": "0.3.0",
+          "rules": [
+            {
+              "id": "CWE-78",
+              "name": "CWE-78",
+              "shortDescription": {
+                "text": "OS command injection: untrusted input reaches a shell command"
+              },
+              "fullDescription": {
+                "text": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/exporter.py`. Evidence line 7: return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)"
+              },
+              "helpUri": "https://cwe.mitre.org/data/definitions/78.html",
+              "properties": {
+                "tags": [
+                  "security",
+                  "deterministic",
+                  "evidence:structural"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "CWE-1336",
+              "name": "CWE-1336",
+              "shortDescription": {
+                "text": "Server-side template injection (SSTI): untrusted input is compiled as a template"
+              },
+              "fullDescription": {
+                "text": "Deterministic detector: Python taint proves untrusted input reaches a ssti sink in `app/main.py`. Evidence line 34: return render_template_string(\"<h1>\" + tpl + \"</h1>\")"
+              },
+              "helpUri": "https://cwe.mitre.org/data/definitions/1336.html",
+              "properties": {
+                "tags": [
+                  "security",
+                  "deterministic",
+                  "evidence:structural",
+                  "proven-flow"
+                ],
+                "security-severity": "8.0"
+              }
+            }
+          ]
+        }
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///ws/repo"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CWE-78",
+          "level": "error",
+          "message": {
+            "text": "OS command injection: untrusted input reaches a shell command"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "app/services/exporter.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 7,
+                  "snippet": {
+                    "text": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "confidence": 0.9,
+            "skill": "deterministic_detector",
+            "stage": "s4_research",
+            "tags": [
+              "deterministic",
+              "evidence:structural"
+            ],
+            "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+            "attack_chain": [
+              "Attacker supplies a crafted value via an HTTP request parameter.",
+              "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+              "The shell command sink executes the attacker-influenced command at app/services/exporter.py:7."
+            ],
+            "grounded": true,
+            "impact": "rce",
+            "cvss_v3.1_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+            "security-severity": "8.9",
+            "cvss_score": "9.8",
+            "taint": {
+              "source": "caller-tainted parameter ``url`` [HTTP request value (attacker-controlled)]",
+              "source_origin": "network",
+              "attack_vector": "remote",
+              "sink": "shell command at app/services/exporter.py:7",
+              "sanitizer_missing": true,
+              "sanitizers_observed": [],
+              "path": [
+                {
+                  "path": "app/main.py",
+                  "start_line": 55,
+                  "end_line": null
+                },
+                {
+                  "path": "app/services/exporter.py",
+                  "start_line": 5,
+                  "end_line": null
+                },
+                {
+                  "path": "app/services/exporter.py",
+                  "start_line": 7,
+                  "end_line": null
+                }
+              ]
+            },
+            "evidence": [
+              {
+                "kind": "structural_hit",
+                "check": "pass",
+                "detail": "shell_command @ app/services/exporter.py:7"
+              },
+              {
+                "kind": "file_exists",
+                "check": "pass",
+                "detail": "app/services/exporter.py"
+              },
+              {
+                "kind": "line_resolves",
+                "check": "pass",
+                "detail": "line 7 of 12"
+              },
+              {
+                "kind": "ast_sink_match",
+                "check": "pass",
+                "detail": "AST confirms a CWE-78 sink-family call near line 7"
+              },
+              {
+                "kind": "snippet_match",
+                "check": "pass",
+                "detail": "matched CWE-family tokens for CWE-78"
+              },
+              {
+                "kind": "cvss_autocomputed",
+                "check": "pass",
+                "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8"
+              }
+            ],
+            "poc": {
+              "is_concrete": true,
+              "payload": "; id #",
+              "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+              "expected_effect": "The injected command executes on the server -> RCE confirmed."
+            },
+            "verification": {
+              "verified": true,
+              "score": 0.6,
+              "signals": {
+                "grounded": true,
+                "taint_complete": true,
+                "concrete_poc": true,
+                "vote_confirmed": false,
+                "externally_corroborated": false
+              },
+              "threshold": 1,
+              "method": "deterministic"
+            }
+          },
+          "fingerprints": {
+            "codereaper/v1": "F-0001"
+          },
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "app/main.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 55
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "app/services/exporter.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 5
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "app/services/exporter.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 7
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "CWE-1336",
+          "level": "error",
+          "message": {
+            "text": "Server-side template injection (SSTI): untrusted input is compiled as a template"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "app/main.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 34,
+                  "snippet": {
+                    "text": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "confidence": 0.9,
+            "skill": "deterministic_detector",
+            "stage": "s4_research",
+            "tags": [
+              "deterministic",
+              "evidence:structural",
+              "proven-flow"
+            ],
+            "remediation": "Never build a template from request input; pass user data as template CONTEXT (variables), never as the template string itself.",
+            "attack_chain": [
+              "Attacker supplies crafted input via an HTTP request (request.args / request.GET / FastAPI param).",
+              "The value flows unsanitised into the query expression.",
+              "The expression is evaluated with attacker-controlled syntax at app/main.py:34."
+            ],
+            "grounded": true,
+            "impact": "rce",
+            "cvss_v3.1_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+            "security-severity": "8.9",
+            "cvss_score": "9.8",
+            "taint": {
+              "source": "HTTP query string",
+              "source_origin": null,
+              "attack_vector": null,
+              "sink": "render_template_string",
+              "sanitizer_missing": true,
+              "sanitizers_observed": [],
+              "path": [
+                {
+                  "path": "app/main.py",
+                  "start_line": 33,
+                  "end_line": null
+                },
+                {
+                  "path": "app/main.py",
+                  "start_line": 34,
+                  "end_line": null
+                }
+              ]
+            },
+            "evidence": [
+              {
+                "kind": "structural_hit",
+                "check": "pass",
+                "detail": "ssti @ app/main.py:34"
+              },
+              {
+                "kind": "file_exists",
+                "check": "pass",
+                "detail": "app/main.py"
+              },
+              {
+                "kind": "line_resolves",
+                "check": "pass",
+                "detail": "line 34 of 61"
+              },
+              {
+                "kind": "snippet_match",
+                "check": "pass",
+                "detail": "matched CWE-family tokens for CWE-1336"
+              },
+              {
+                "kind": "ast_taint_proven",
+                "check": "pass",
+                "detail": "intraprocedural flow proven in do_preview: HTTP query string -> render_template_string"
+              },
+              {
+                "kind": "cvss_autocomputed",
+                "check": "pass",
+                "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8"
+              }
+            ],
+            "poc": {
+              "is_concrete": true,
+              "payload": "{{7*7}}  (then {{config}} / {{''.__class__...}} for RCE)",
+              "invocation": "Send via the relevant HTTP request field.",
+              "expected_effect": "Template expression is evaluated server-side -> SSTI -> RCE."
+            },
+            "verification": {
+              "verified": true,
+              "score": 0.6,
+              "signals": {
+                "grounded": true,
+                "taint_complete": true,
+                "concrete_poc": true,
+                "vote_confirmed": false,
+                "externally_corroborated": false
+              },
+              "threshold": 1,
+              "method": "deterministic"
+            }
+          },
+          "fingerprints": {
+            "codereaper/v1": "F-0002"
+          },
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "app/main.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 33
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "app/main.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 34
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "run_config": {
+          "roles": {
+            "surveyor": {
+              "via": "mock",
+              "model": "mock-fast",
+              "temperature": 0.0,
+              "max_tokens": 1024,
+              "timeout": null,
+              "max_retries": 3,
+              "seed": null,
+              "num_ctx": null
+            },
+            "reporter": {
+              "via": "mock",
+              "model": "mock-fast",
+              "temperature": 0.0,
+              "max_tokens": 1024,
+              "timeout": null,
+              "max_retries": 3,
+              "seed": null,
+              "num_ctx": null
+            }
+          },
+          "gates": {
+            "voting": {
+              "enabled": false,
+              "quorum": 2,
+              "voters": []
+            },
+            "s4b_grounding_strict": false,
+            "s8b_poc_strict": false,
+            "s8c_verify_strict": false,
+            "s8c_verify_threshold": 1,
+            "seeding": {
+              "enabled": false,
+              "max_seeds": 20
+            },
+            "platt_calibration": {
+              "enabled": false,
+              "reject_below": 0.3,
+              "confirm_at_or_above": 0.7
+            }
+          },
+          "enabled_backends": [
+            "bedrock",
+            "mock",
+            "ollama",
+            "openrouter"
+          ]
+        },
+        "coverage": {
+          "source_files_parsed": 2,
+          "coverage_pct": 100.0,
+          "complete": true,
+          "by_language": {
+            "Python": 2
+          },
+          "inventory": {
+            "total_files": 2,
+            "total_loc": 51,
+            "code_loc": 51,
+            "code_files": 2,
+            "code_languages": {
+              "Python": {
+                "files": 2,
+                "loc": 51,
+                "loc_pct": 100.0
+              }
+            },
+            "excluded": {
+              "data_markup_loc": 0,
+              "data_markup_files": 0,
+              "binary_files": 0
+            },
+            "languages": {
+              "Python": {
+                "files": 2,
+                "loc": 51,
+                "loc_pct": 100.0
+              }
+            },
+            "frameworks": {
+              "Python": [
+                "Flask"
+              ]
+            }
+          },
+          "skipped": {
+            "oversize": 0,
+            "truncated_by_limit": 0,
+            "excluded": 0,
+            "symlinks": 0,
+            "dupe_configs": 0,
+            "non_source": 0
+          },
+          "total_bytes": 2096
+        },
+        "budget": {
+          "max_budget_usd": 0.0,
+          "total_cost_usd": 0.0,
+          "budget_exceeded": false,
+          "stages_skipped": 0
+        },
+        "time": {
+          "max_wall_seconds": 10800.0,
+          "elapsed_seconds": 0.072,
+          "time_exceeded": false,
+          "stages_skipped": 0
+        }
+      }
+    }
+  ]
+}

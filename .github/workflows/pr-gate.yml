@@ -1,0 +1,20 @@
+# INCREMENTAL GATE: pull requests ONLY. No branch names -- a repository whose default branch is
+# called anything other than `main` must get the same gate.
+name: pr-gate
+on:
+  pull_request:
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  incremental:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # a diff needs the base commit
+      - name: Show what an incremental scan would cover
+        run: |
+          echo "event=$GITHUB_EVENT_NAME base=$GITHUB_BASE_REF head=$GITHUB_HEAD_REF"
+          git diff --name-only "origin/$GITHUB_BASE_REF...HEAD" | tee changed.txt
+          echo "changed files: $(wc -l < changed.txt)"

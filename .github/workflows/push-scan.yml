@@ -1,0 +1,18 @@
+# FULL SCAN: pushes to the repository's OWN default branch. Derived from the event payload, never
+# a hardcoded branch name.
+name: push-scan
+on:
+  push:
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  full:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show what a full scan would cover
+        run: |
+          echo "event=$GITHUB_EVENT_NAME ref=$GITHUB_REF default=${{ github.event.repository.default_branch }}"
+          find . -name '*.py' -not -path './.git/*' | wc -l

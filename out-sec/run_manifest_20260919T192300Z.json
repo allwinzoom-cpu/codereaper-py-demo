@@ -1,0 +1,4430 @@
+{
+  "application_id": "scan-4735648b90e74e6eb2072342cd9583a3",
+  "backend_degraded": false,
+  "budget_exceeded": false,
+  "config_hash": "28b45d138370893550443e080e78e0bfcab8cf188f64b939e528fcdbdd863c64",
+  "coverage": {
+    "by_language": {
+      "JSON": 52,
+      "Python": 9,
+      "YAML": 1
+    },
+    "complete": true,
+    "coverage_pct": 100.0,
+    "inventory": {
+      "code_files": 9,
+      "code_languages": {
+        "Python": {
+          "files": 9,
+          "loc": 95,
+          "loc_pct": 100.0
+        }
+      },
+      "code_loc": 95,
+      "excluded": {
+        "binary_files": 0,
+        "data_markup_files": 53,
+        "data_markup_loc": 22853
+      },
+      "frameworks": {
+        "Python": [
+          "Flask"
+        ]
+      },
+      "languages": {
+        "JSON": {
+          "files": 52,
+          "loc": 22838,
+          "loc_pct": 99.5
+        },
+        "Python": {
+          "files": 9,
+          "loc": 95,
+          "loc_pct": 0.4
+        },
+        "YAML": {
+          "files": 1,
+          "loc": 15,
+          "loc_pct": 0.1
+        }
+      },
+      "total_files": 62,
+      "total_loc": 22948
+    },
+    "skipped": {
+      "dupe_configs": 0,
+      "excluded": 0,
+      "non_source": 35,
+      "oversize": 0,
+      "symlinks": 0,
+      "truncated_by_limit": 0
+    },
+    "source_files_parsed": 62,
+    "total_bytes": 1267536
+  },
+  "dropped_count": 0,
+  "ended_at": "2026-09-19T19:23:00.862071Z",
+  "file_hashes": {},
+  "finding_count": 5,
+  "hallucination_metrics": {
+    "outcome_unverified": 0,
+    "raw_lens": 5,
+    "ungrounded_downgraded": 0,
+    "ungrounded_dropped": 0
+  },
+  "llm_usage": {
+    "by_provider": {},
+    "by_stage": {},
+    "cost_usd": 0,
+    "estimated_cost_models": [],
+    "reconciliation": {
+      "by_call_provider": 0,
+      "by_call_stage": 0,
+      "stage_reported": 0,
+      "stage_reporting_matches": true,
+      "unattributed": 0,
+      "views_agree": true
+    },
+    "requests": 0,
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "tokens_total": 0
+  },
+  "max_budget_usd": 0.0,
+  "max_wall_seconds": 10800.0,
+  "profile": "tier1",
+  "run_config": {
+    "enabled_backends": [
+      "bedrock",
+      "mock",
+      "ollama",
+      "openrouter"
+    ],
+    "gates": {
+      "platt_calibration": {
+        "confirm_at_or_above": 0.7,
+        "enabled": false,
+        "reject_below": 0.3
+      },
+      "s4b_grounding_strict": false,
+      "s8b_poc_strict": false,
+      "s8c_verify_strict": false,
+      "s8c_verify_threshold": 1,
+      "seeding": {
+        "enabled": false,
+        "max_seeds": 20
+      },
+      "voting": {
+        "enabled": false,
+        "quorum": 2,
+        "voters": []
+      }
+    },
+    "roles": {
+      "reporter": {
+        "max_retries": 3,
+        "max_tokens": 1024,
+        "model": "mock-fast",
+        "num_ctx": null,
+        "seed": null,
+        "temperature": 0.0,
+        "timeout": null,
+        "via": "mock"
+      },
+      "surveyor": {
+        "max_retries": 3,
+        "max_tokens": 1024,
+        "model": "mock-fast",
+        "num_ctx": null,
+        "seed": null,
+        "temperature": 0.0,
+        "timeout": null,
+        "via": "mock"
+      }
+    }
+  },
+  "scan_id": "scan-4735648b90e74e6eb2072342cd9583a3",
+  "src_bytes": 1267536,
+  "src_loc": 22948,
+  "stages": [
+    {
+      "artifacts": {
+        "structural_cache": "miss",
+        "structural_index": {
+          "cross_file_flows": [
+            {
+              "cwe": "CWE-89",
+              "hops": 2,
+              "import_backed": true,
+              "path": [
+                {
+                  "func": "do_search",
+                  "line": 10,
+                  "path": "app/main.py"
+                },
+                {
+                  "func": "lookup",
+                  "line": 4,
+                  "path": "app/services/search.py"
+                },
+                {
+                  "func": "run_query",
+                  "line": 8,
+                  "path": "app/services/db.py"
+                }
+              ],
+              "sink": {
+                "func": "run_query",
+                "line": 11,
+                "path": "app/services/db.py"
+              },
+              "source": {
+                "expr_line": 12,
+                "func": "do_search",
+                "line": 10,
+                "path": "app/main.py"
+              },
+              "via_call": "lookup",
+              "via_chain": [
+                "lookup",
+                "run_query"
+              ],
+              "weak": false
+            },
+            {
+              "cwe": "CWE-78",
+              "hops": 1,
+              "import_backed": true,
+              "path": [
+                {
+                  "func": "do_report",
+                  "line": 17,
+                  "path": "app/main.py"
+                },
+                {
+                  "func": "build",
+                  "line": 5,
+                  "path": "app/services/reports.py"
+                }
+              ],
+              "sink": {
+                "func": "build",
+                "line": 7,
+                "path": "app/services/reports.py"
+              },
+              "source": {
+                "expr_line": 19,
+                "func": "do_report",
+                "line": 17,
+                "path": "app/main.py"
+              },
+              "via_call": "build",
+              "via_chain": [
+                "build"
+              ],
+              "weak": false
+            },
+            {
+              "cwe": "CWE-22",
+              "hops": 1,
+              "import_backed": true,
+              "path": [
+                {
+                  "func": "do_download",
+                  "line": 24,
+                  "path": "app/main.py"
+                },
+                {
+                  "func": "fetch",
+                  "line": 6,
+                  "path": "app/services/storage.py"
+                }
+              ],
+              "sink": {
+                "func": "fetch",
+                "line": 8,
+                "path": "app/services/storage.py"
+              },
+              "source": {
+                "expr_line": 26,
+                "func": "do_download",
+                "line": 24,
+                "path": "app/main.py"
+              },
+              "via_call": "fetch",
+              "via_chain": [
+                "fetch"
+              ],
+              "weak": true
+            },
+            {
+              "cwe": "CWE-78",
+              "hops": 1,
+              "import_backed": true,
+              "path": [
+                {
+                  "func": "do_notify",
+                  "line": 38,
+                  "path": "app/main.py"
+                },
+                {
+                  "func": "send",
+                  "line": 6,
+                  "path": "app/services/mailer.py"
+                }
+              ],
+              "sink": {
+                "func": "send",
+                "line": 8,
+                "path": "app/services/mailer.py"
+              },
+              "source": {
+                "expr_line": 40,
+                "func": "do_notify",
+                "line": 38,
+                "path": "app/main.py"
+              },
+              "via_call": "send",
+              "via_chain": [
+                "send"
+              ],
+              "weak": false
+            },
+            {
+              "cwe": "CWE-78",
+              "hops": 1,
+              "import_backed": true,
+              "path": [
+                {
+                  "func": "do_export",
+                  "line": 53,
+                  "path": "app/main.py"
+                },
+                {
+                  "func": "to_pdf",
+                  "line": 5,
+                  "path": "app/services/exporter.py"
+                }
+              ],
+              "sink": {
+                "func": "to_pdf",
+                "line": 7,
+                "path": "app/services/exporter.py"
+              },
+              "source": {
+                "expr_line": 55,
+                "func": "do_export",
+                "line": 53,
+                "path": "app/main.py"
+              },
+              "via_call": "to_pdf",
+              "via_chain": [
+                "to_pdf"
+              ],
+              "weak": false
+            }
+          ],
+          "files_indexed": 62,
+          "routes": [
+            {
+              "kind": "route",
+              "line": 9,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/search"
+            },
+            {
+              "kind": "route",
+              "line": 16,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/report"
+            },
+            {
+              "kind": "route",
+              "line": 23,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/download"
+            },
+            {
+              "kind": "route",
+              "line": 30,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/preview"
+            },
+            {
+              "kind": "route",
+              "line": 37,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/notify"
+            },
+            {
+              "kind": "route",
+              "line": 46,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/stats"
+            },
+            {
+              "kind": "route",
+              "line": 52,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/export"
+            },
+            {
+              "kind": "route",
+              "line": 58,
+              "path": "app/main.py",
+              "pattern_id": "python/flask|fastapi",
+              "snippet": "/export-safe"
+            }
+          ],
+          "secrets": [],
+          "sinks": [
+            {
+              "cwe": "CWE-89",
+              "kind": "sql_execute_var",
+              "line": 11,
+              "path": "app/services/db.py",
+              "pattern_id": "sink",
+              "snippet": "    cur.execute(sql)"
+            },
+            {
+              "cwe": "CWE-89",
+              "kind": "java_sql_concat",
+              "line": 11,
+              "path": "app/services/db.py",
+              "pattern_id": "sink",
+              "snippet": "    cur.execute(sql)"
+            },
+            {
+              "cwe": "CWE-89",
+              "kind": "java_sql_concat",
+              "line": 18,
+              "path": "app/services/db.py",
+              "pattern_id": "sink",
+              "snippet": "    cur.execute(sql, params)"
+            },
+            {
+              "cwe": "CWE-78",
+              "kind": "subprocess_shell_true",
+              "line": 7,
+              "path": "app/services/exporter.py",
+              "pattern_id": "sink",
+              "snippet": "    return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)"
+            },
+            {
+              "cwe": "CWE-78",
+              "kind": "subprocess_shell_true",
+              "line": 7,
+              "path": "app/services/reports.py",
+              "pattern_id": "sink",
+              "snippet": "    return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()"
+            },
+            {
+              "cwe": "CWE-78",
+              "kind": "subprocess_shell_true",
+              "line": 8,
+              "path": "app/services/mailer.py",
+              "pattern_id": "sink",
+              "snippet": "    return subprocess.check_output(\"cat /srv/tpl/\" + TEMPLATES[kind], shell=True).decode()"
+            }
+          ],
+          "sources": [
+            {
+              "kind": "http_input",
+              "line": 12,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    term = request.args.get(\"q\", \"\")"
+            },
+            {
+              "kind": "http_input",
+              "line": 19,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    target = request.args.get(\"host\", \"\")"
+            },
+            {
+              "kind": "http_input",
+              "line": 26,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    name = request.args.get(\"name\", \"\")"
+            },
+            {
+              "kind": "http_input",
+              "line": 33,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    tpl = request.args.get(\"tpl\", \"\")"
+            },
+            {
+              "kind": "http_input",
+              "line": 40,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    kind = request.args.get(\"kind\", \"\")"
+            },
+            {
+              "kind": "http_input",
+              "line": 55,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    return exporter.to_pdf(request.args.get(\"url\", \"\"))"
+            },
+            {
+              "kind": "http_input",
+              "line": 61,
+              "path": "app/main.py",
+              "pattern_id": "source",
+              "snippet": "    return exporter.to_pdf_safe(request.args.get(\"url\", \"\"))"
+            },
+            {
+              "kind": "file_read",
+              "line": 8,
+              "path": "app/services/storage.py",
+              "pattern_id": "source",
+              "snippet": "    with open(os.path.join(BASE, name)) as fh:"
+            },
+            {
+              "kind": "file_read",
+              "line": 15,
+              "path": "app/services/storage.py",
+              "pattern_id": "source",
+              "snippet": "    with open(os.path.join(BASE, safe)) as fh:"
+            }
+          ],
+          "weak_sinks": [
+            {
+              "cwe": "CWE-918",
+              "kind": "weak_ssrf_fetch_js",
+              "line": 27,
+              "path": "app/main.py",
+              "pattern_id": "weak_sink",
+              "snippet": "    return storage.fetch(name)"
+            },
+            {
+              "cwe": "CWE-22",
+              "kind": "weak_path_open_join_py",
+              "line": 8,
+              "path": "app/services/storage.py",
+              "pattern_id": "weak_sink",
+              "snippet": "    with open(os.path.join(BASE, name)) as fh:"
+            },
+            {
+              "cwe": "CWE-22",
+              "kind": "weak_path_open_join_py",
+              "line": 15,
+              "path": "app/services/storage.py",
+              "pattern_id": "weak_sink",
+              "snippet": "    with open(os.path.join(BASE, safe)) as fh:"
+            }
+          ]
+        },
+        "structural_summary": {
+          "cross_file_flows": 5,
+          "files_indexed": 62,
+          "routes": 8,
+          "secrets": 0,
+          "sinks": 6,
+          "sources": 9,
+          "weak_sinks": 3
+        }
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.10072704200865701,
+      "error": null,
+      "findings": [],
+      "finished_at": "2026-09-19T19:23:00.623980Z",
+      "skill": "structural_index",
+      "stage_id": "s1b_structural",
+      "started_at": "2026-09-19T19:23:00.523234Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "calibration": {
+          "boosted": 0,
+          "calibrated": 0,
+          "reduced": 0
+        },
+        "confined_flows": [
+          [
+            "CWE-78",
+            "app/services/mailer.py",
+            8
+          ]
+        ],
+        "confined_vetoed": 0,
+        "confined_vetoed_detail": [],
+        "lenses_skipped": [],
+        "off_inventory": 0,
+        "per_lens_count": {
+          "client_side": 0,
+          "deterministic": 5
+        },
+        "platt_calibration": {
+          "abstained": 0,
+          "fitted": false,
+          "n": 0
+        },
+        "self_consistency_samples": 1,
+        "taint_failed_files": 0,
+        "taint_failures": []
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.19532129197614267,
+      "error": null,
+      "findings": [
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via the HTTP request parameter named at this finding's taint source location.",
+            "The value is string-formatted (.format()/%/f-string/concatenation) into a SQL statement with no parameterisation.",
+            "The statement reaches the 'sql_execute_var' sink at app/services/db.py:11 and executes against the database."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.4,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+          "cwe": "CWE-89",
+          "description": "Deterministic detector: a SQL sink ('sql_execute_var') co-occurs with a query built from untrusted input in `app/services/db.py`. Evidence line 11: cur.execute(sql)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "sql_execute_var @ app/services/db.py:11",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/db.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 11 of 19",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-89 sink-family call near line 11",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-89",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L score=9.4",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0001",
+          "impact": "sqli",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Query returns all rows or raises a SQL error -> injection confirmed.",
+            "invocation": "Send via the HTTP parameter that reaches this sink (see the taint source location on this finding).",
+            "is_concrete": true,
+            "language": "",
+            "payload": "' OR '1'='1' -- "
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Use parameterised queries / bound parameters everywhere (cursor.execute(sql, params); pandas.read_sql(sql, con, params=...)). Never build SQL with .format()/%/f-strings/concatenation on request data.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-89): caller-tainted parameter ``sql`` \u2192 cur.execute; path across 3 files: app/main.py:12 \u2192 app/services/search.py:4 \u2192 app/services/db.py:8 \u2192 app/services/db.py:11; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "sql_execute_var at app/services/db.py:11",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            },
+            "source": "caller-tainted parameter ``sql`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "term = request.args.get(\"q\", \"\")",
+              "start_line": 12
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "term = request.args.get(\"q\", \"\")",
+                "start_line": 12
+              },
+              {
+                "end_line": null,
+                "path": "app/services/search.py",
+                "snippet": "cross-file hop: lookup()",
+                "start_line": 4
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "sql",
+                "start_line": 8
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "cur.execute(sql)",
+                "start_line": 11
+              }
+            ]
+          },
+          "title": "SQL injection: untrusted input reaches 'sql_execute_var' sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/exporter.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/exporter.py`. Evidence line 7: return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/exporter.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/exporter.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0002",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``url`` \u2192 subprocess.check_output; path across 2 files: app/main.py:55 \u2192 app/services/exporter.py:5 \u2192 app/services/exporter.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/exporter.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``url`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+              "start_line": 55
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+                "start_line": 55
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "url",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "subprocess.check_output('wkhtmltopdf ' + url + ' /tmp/o.pdf', shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/reports.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/reports.py`. Evidence line 7: return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/reports.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/reports.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0003",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``target`` \u2192 subprocess.check_output; path across 2 files: app/main.py:19 \u2192 app/services/reports.py:5 \u2192 app/services/reports.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/reports.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``target`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "target = request.args.get(\"host\", \"\")",
+              "start_line": 19
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "target = request.args.get(\"host\", \"\")",
+                "start_line": 19
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "target",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "subprocess.check_output('ping -c 1 ' + target, shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value flows unsanitised into a path_open sink.",
+            "The sink executes/deserialises the attacker payload at app/services/storage.py:8."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 8.2,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+          "cwe": "CWE-22",
+          "description": "Deterministic detector: taint proves untrusted input reaches a path_open sink in `app/services/storage.py`. Evidence line 8: with open(os.path.join(BASE, name)) as fh:",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "path_open @ app/services/storage.py:8",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/storage.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 8 of 16",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-22 sink-family call near line 8",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-22",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N score=8.2",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0004",
+          "impact": "traversal",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Server reads or serves /etc/passwd -> path traversal confirmed.",
+            "invocation": "Supply as the filename / path parameter.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "../../../../etc/passwd"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Resolve against a fixed base directory and verify the canonical path stays inside it; reject '..' segments; prefer an allow-list of filenames.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-22): caller-tainted parameter ``name`` \u2192 open; path across 2 files: app/main.py:26 \u2192 app/services/storage.py:6 \u2192 app/services/storage.py:8; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "path_open at app/services/storage.py:8",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            },
+            "source": "caller-tainted parameter ``name`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "name = request.args.get(\"name\", \"\")",
+              "start_line": 26
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "name = request.args.get(\"name\", \"\")",
+                "start_line": 26
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "name",
+                "start_line": 6
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "open(os.path.join(BASE, name))",
+                "start_line": 8
+              }
+            ]
+          },
+          "title": "Path traversal: user-controlled path reaches a file sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies crafted input via an HTTP request (request.args / request.GET / FastAPI param).",
+            "The value flows unsanitised into the query expression.",
+            "The expression is evaluated with attacker-controlled syntax at app/main.py:34."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-1336",
+          "description": "Deterministic detector: Python taint proves untrusted input reaches a ssti sink in `app/main.py`. Evidence line 34: return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "ssti @ app/main.py:34",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/main.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 34 of 61",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-1336",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "intraprocedural flow proven in do_preview: HTTP query string -> render_template_string",
+              "kind": "ast_taint_proven"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0005",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Template expression is evaluated server-side -> SSTI -> RCE.",
+            "invocation": "Send via the relevant HTTP request field.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "{{7*7}}  (then {{config}} / {{''.__class__...}} for RCE)"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Never build a template from request input; pass user data as template CONTEXT (variables), never as the template string itself.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural",
+            "proven-flow"
+          ],
+          "taint": {
+            "attack_vector": null,
+            "proof_basis": "Tier-1 taint proven (CWE-1336): HTTP query string \u2192 render_template_string; path source@L33 \u2192 sink@L34; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "render_template_string",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            },
+            "source": "HTTP query string",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+              "start_line": 33
+            },
+            "source_origin": null,
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+                "start_line": 33
+              },
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+                "start_line": 34
+              }
+            ]
+          },
+          "title": "Server-side template injection (SSTI): untrusted input is compiled as a template",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        }
+      ],
+      "finished_at": "2026-09-19T19:23:00.819628Z",
+      "skill": "research_lenses",
+      "stage_id": "s4_research",
+      "started_at": "2026-09-19T19:23:00.624305Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "cvss_autofilled_count": 5,
+        "grounding_dropped_ids": [],
+        "grounding_report": {
+          "dropped": 0,
+          "grounded": 5,
+          "hallucinated_line": 0,
+          "hallucinated_path": 0,
+          "notes": [],
+          "weak_evidence": 0
+        },
+        "strict": false,
+        "systemic_sql_findings": 0,
+        "taint_proven_count": 1,
+        "taint_sanitized_count": 0
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.011756291991332546,
+      "error": null,
+      "findings": [
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via the HTTP request parameter named at this finding's taint source location.",
+            "The value is string-formatted (.format()/%/f-string/concatenation) into a SQL statement with no parameterisation.",
+            "The statement reaches the 'sql_execute_var' sink at app/services/db.py:11 and executes against the database."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.4,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+          "cwe": "CWE-89",
+          "description": "Deterministic detector: a SQL sink ('sql_execute_var') co-occurs with a query built from untrusted input in `app/services/db.py`. Evidence line 11: cur.execute(sql)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "sql_execute_var @ app/services/db.py:11",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/db.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 11 of 19",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-89 sink-family call near line 11",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-89",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L score=9.4",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0001",
+          "impact": "sqli",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Query returns all rows or raises a SQL error -> injection confirmed.",
+            "invocation": "Send via the HTTP parameter that reaches this sink (see the taint source location on this finding).",
+            "is_concrete": true,
+            "language": "",
+            "payload": "' OR '1'='1' -- "
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Use parameterised queries / bound parameters everywhere (cursor.execute(sql, params); pandas.read_sql(sql, con, params=...)). Never build SQL with .format()/%/f-strings/concatenation on request data.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-89): caller-tainted parameter ``sql`` \u2192 cur.execute; path across 3 files: app/main.py:12 \u2192 app/services/search.py:4 \u2192 app/services/db.py:8 \u2192 app/services/db.py:11; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "sql_execute_var at app/services/db.py:11",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            },
+            "source": "caller-tainted parameter ``sql`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "term = request.args.get(\"q\", \"\")",
+              "start_line": 12
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "term = request.args.get(\"q\", \"\")",
+                "start_line": 12
+              },
+              {
+                "end_line": null,
+                "path": "app/services/search.py",
+                "snippet": "cross-file hop: lookup()",
+                "start_line": 4
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "sql",
+                "start_line": 8
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "cur.execute(sql)",
+                "start_line": 11
+              }
+            ]
+          },
+          "title": "SQL injection: untrusted input reaches 'sql_execute_var' sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/exporter.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/exporter.py`. Evidence line 7: return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/exporter.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/exporter.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0002",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``url`` \u2192 subprocess.check_output; path across 2 files: app/main.py:55 \u2192 app/services/exporter.py:5 \u2192 app/services/exporter.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/exporter.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``url`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+              "start_line": 55
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+                "start_line": 55
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "url",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "subprocess.check_output('wkhtmltopdf ' + url + ' /tmp/o.pdf', shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/reports.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/reports.py`. Evidence line 7: return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/reports.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/reports.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0003",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``target`` \u2192 subprocess.check_output; path across 2 files: app/main.py:19 \u2192 app/services/reports.py:5 \u2192 app/services/reports.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/reports.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``target`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "target = request.args.get(\"host\", \"\")",
+              "start_line": 19
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "target = request.args.get(\"host\", \"\")",
+                "start_line": 19
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "target",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "subprocess.check_output('ping -c 1 ' + target, shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value flows unsanitised into a path_open sink.",
+            "The sink executes/deserialises the attacker payload at app/services/storage.py:8."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 8.2,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+          "cwe": "CWE-22",
+          "description": "Deterministic detector: taint proves untrusted input reaches a path_open sink in `app/services/storage.py`. Evidence line 8: with open(os.path.join(BASE, name)) as fh:",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "path_open @ app/services/storage.py:8",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/storage.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 8 of 16",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-22 sink-family call near line 8",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-22",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N score=8.2",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0004",
+          "impact": "traversal",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Server reads or serves /etc/passwd -> path traversal confirmed.",
+            "invocation": "Supply as the filename / path parameter.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "../../../../etc/passwd"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Resolve against a fixed base directory and verify the canonical path stays inside it; reject '..' segments; prefer an allow-list of filenames.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-22): caller-tainted parameter ``name`` \u2192 open; path across 2 files: app/main.py:26 \u2192 app/services/storage.py:6 \u2192 app/services/storage.py:8; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "path_open at app/services/storage.py:8",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            },
+            "source": "caller-tainted parameter ``name`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "name = request.args.get(\"name\", \"\")",
+              "start_line": 26
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "name = request.args.get(\"name\", \"\")",
+                "start_line": 26
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "name",
+                "start_line": 6
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "open(os.path.join(BASE, name))",
+                "start_line": 8
+              }
+            ]
+          },
+          "title": "Path traversal: user-controlled path reaches a file sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies crafted input via an HTTP request (request.args / request.GET / FastAPI param).",
+            "The value flows unsanitised into the query expression.",
+            "The expression is evaluated with attacker-controlled syntax at app/main.py:34."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-1336",
+          "description": "Deterministic detector: Python taint proves untrusted input reaches a ssti sink in `app/main.py`. Evidence line 34: return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "ssti @ app/main.py:34",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/main.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 34 of 61",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-1336",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "intraprocedural flow proven in do_preview: HTTP query string -> render_template_string",
+              "kind": "ast_taint_proven"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0005",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Template expression is evaluated server-side -> SSTI -> RCE.",
+            "invocation": "Send via the relevant HTTP request field.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "{{7*7}}  (then {{config}} / {{''.__class__...}} for RCE)"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Never build a template from request input; pass user data as template CONTEXT (variables), never as the template string itself.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural",
+            "proven-flow"
+          ],
+          "taint": {
+            "attack_vector": null,
+            "proof_basis": "Tier-1 taint proven (CWE-1336): HTTP query string \u2192 render_template_string; path source@L33 \u2192 sink@L34; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "render_template_string",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            },
+            "source": "HTTP query string",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+              "start_line": 33
+            },
+            "source_origin": null,
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+                "start_line": 33
+              },
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+                "start_line": 34
+              }
+            ]
+          },
+          "title": "Server-side template injection (SSTI): untrusted input is compiled as a template",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        }
+      ],
+      "finished_at": "2026-09-19T19:23:00.831654Z",
+      "skill": "grounding_pass",
+      "stage_id": "s4b_grounding",
+      "started_at": "2026-09-19T19:23:00.819896Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "input_count": 5,
+        "output_count": 5,
+        "systemic_clusters": 0
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0008748749969527125,
+      "error": null,
+      "findings": [
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via the HTTP request parameter named at this finding's taint source location.",
+            "The value is string-formatted (.format()/%/f-string/concatenation) into a SQL statement with no parameterisation.",
+            "The statement reaches the 'sql_execute_var' sink at app/services/db.py:11 and executes against the database."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.4,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+          "cwe": "CWE-89",
+          "description": "Deterministic detector: a SQL sink ('sql_execute_var') co-occurs with a query built from untrusted input in `app/services/db.py`. Evidence line 11: cur.execute(sql)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "sql_execute_var @ app/services/db.py:11",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/db.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 11 of 19",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-89 sink-family call near line 11",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-89",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L score=9.4",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0001",
+          "impact": "sqli",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Query returns all rows or raises a SQL error -> injection confirmed.",
+            "invocation": "Send via the HTTP parameter that reaches this sink (see the taint source location on this finding).",
+            "is_concrete": true,
+            "language": "",
+            "payload": "' OR '1'='1' -- "
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Use parameterised queries / bound parameters everywhere (cursor.execute(sql, params); pandas.read_sql(sql, con, params=...)). Never build SQL with .format()/%/f-strings/concatenation on request data.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-89): caller-tainted parameter ``sql`` \u2192 cur.execute; path across 3 files: app/main.py:12 \u2192 app/services/search.py:4 \u2192 app/services/db.py:8 \u2192 app/services/db.py:11; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "sql_execute_var at app/services/db.py:11",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            },
+            "source": "caller-tainted parameter ``sql`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "term = request.args.get(\"q\", \"\")",
+              "start_line": 12
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "term = request.args.get(\"q\", \"\")",
+                "start_line": 12
+              },
+              {
+                "end_line": null,
+                "path": "app/services/search.py",
+                "snippet": "cross-file hop: lookup()",
+                "start_line": 4
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "sql",
+                "start_line": 8
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "cur.execute(sql)",
+                "start_line": 11
+              }
+            ]
+          },
+          "title": "SQL injection: untrusted input reaches 'sql_execute_var' sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/exporter.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/exporter.py`. Evidence line 7: return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/exporter.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/exporter.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0002",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``url`` \u2192 subprocess.check_output; path across 2 files: app/main.py:55 \u2192 app/services/exporter.py:5 \u2192 app/services/exporter.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/exporter.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``url`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+              "start_line": 55
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+                "start_line": 55
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "url",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "subprocess.check_output('wkhtmltopdf ' + url + ' /tmp/o.pdf', shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/reports.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/reports.py`. Evidence line 7: return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/reports.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/reports.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0003",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``target`` \u2192 subprocess.check_output; path across 2 files: app/main.py:19 \u2192 app/services/reports.py:5 \u2192 app/services/reports.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/reports.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``target`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "target = request.args.get(\"host\", \"\")",
+              "start_line": 19
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "target = request.args.get(\"host\", \"\")",
+                "start_line": 19
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "target",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "subprocess.check_output('ping -c 1 ' + target, shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value flows unsanitised into a path_open sink.",
+            "The sink executes/deserialises the attacker payload at app/services/storage.py:8."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 8.2,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+          "cwe": "CWE-22",
+          "description": "Deterministic detector: taint proves untrusted input reaches a path_open sink in `app/services/storage.py`. Evidence line 8: with open(os.path.join(BASE, name)) as fh:",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "path_open @ app/services/storage.py:8",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/storage.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 8 of 16",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-22 sink-family call near line 8",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-22",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N score=8.2",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0004",
+          "impact": "traversal",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Server reads or serves /etc/passwd -> path traversal confirmed.",
+            "invocation": "Supply as the filename / path parameter.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "../../../../etc/passwd"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Resolve against a fixed base directory and verify the canonical path stays inside it; reject '..' segments; prefer an allow-list of filenames.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-22): caller-tainted parameter ``name`` \u2192 open; path across 2 files: app/main.py:26 \u2192 app/services/storage.py:6 \u2192 app/services/storage.py:8; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "path_open at app/services/storage.py:8",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            },
+            "source": "caller-tainted parameter ``name`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "name = request.args.get(\"name\", \"\")",
+              "start_line": 26
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "name = request.args.get(\"name\", \"\")",
+                "start_line": 26
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "name",
+                "start_line": 6
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "open(os.path.join(BASE, name))",
+                "start_line": 8
+              }
+            ]
+          },
+          "title": "Path traversal: user-controlled path reaches a file sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies crafted input via an HTTP request (request.args / request.GET / FastAPI param).",
+            "The value flows unsanitised into the query expression.",
+            "The expression is evaluated with attacker-controlled syntax at app/main.py:34."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-1336",
+          "description": "Deterministic detector: Python taint proves untrusted input reaches a ssti sink in `app/main.py`. Evidence line 34: return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "ssti @ app/main.py:34",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/main.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 34 of 61",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-1336",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "intraprocedural flow proven in do_preview: HTTP query string -> render_template_string",
+              "kind": "ast_taint_proven"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0005",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Template expression is evaluated server-side -> SSTI -> RCE.",
+            "invocation": "Send via the relevant HTTP request field.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "{{7*7}}  (then {{config}} / {{''.__class__...}} for RCE)"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Never build a template from request input; pass user data as template CONTEXT (variables), never as the template string itself.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural",
+            "proven-flow"
+          ],
+          "taint": {
+            "attack_vector": null,
+            "proof_basis": "Tier-1 taint proven (CWE-1336): HTTP query string \u2192 render_template_string; path source@L33 \u2192 sink@L34; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "render_template_string",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            },
+            "source": "HTTP query string",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+              "start_line": 33
+            },
+            "source_origin": null,
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+                "start_line": 33
+              },
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+                "start_line": 34
+              }
+            ]
+          },
+          "title": "Server-side template injection (SSTI): untrusted input is compiled as a template",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        }
+      ],
+      "finished_at": "2026-09-19T19:23:00.832813Z",
+      "skill": "dedupe",
+      "stage_id": "s7_dedupe",
+      "started_at": "2026-09-19T19:23:00.831937Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "verification_metrics": {
+          "considered": 5,
+          "corroborated": 0,
+          "dropped": 0,
+          "strict": false,
+          "threshold": 1,
+          "two_key_capped": 0,
+          "ungrounded_absence_capped": 0,
+          "unverified": 0,
+          "verified": 5
+        }
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 6.645798566751182e-05,
+      "error": null,
+      "findings": [
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via the HTTP request parameter named at this finding's taint source location.",
+            "The value is string-formatted (.format()/%/f-string/concatenation) into a SQL statement with no parameterisation.",
+            "The statement reaches the 'sql_execute_var' sink at app/services/db.py:11 and executes against the database."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.4,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+          "cwe": "CWE-89",
+          "description": "Deterministic detector: a SQL sink ('sql_execute_var') co-occurs with a query built from untrusted input in `app/services/db.py`. Evidence line 11: cur.execute(sql)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "sql_execute_var @ app/services/db.py:11",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/db.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 11 of 19",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-89 sink-family call near line 11",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-89",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L score=9.4",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0001",
+          "impact": "sqli",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Query returns all rows or raises a SQL error -> injection confirmed.",
+            "invocation": "Send via the HTTP parameter that reaches this sink (see the taint source location on this finding).",
+            "is_concrete": true,
+            "language": "",
+            "payload": "' OR '1'='1' -- "
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Use parameterised queries / bound parameters everywhere (cursor.execute(sql, params); pandas.read_sql(sql, con, params=...)). Never build SQL with .format()/%/f-strings/concatenation on request data.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-89): caller-tainted parameter ``sql`` \u2192 cur.execute; path across 3 files: app/main.py:12 \u2192 app/services/search.py:4 \u2192 app/services/db.py:8 \u2192 app/services/db.py:11; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "sql_execute_var at app/services/db.py:11",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            },
+            "source": "caller-tainted parameter ``sql`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "term = request.args.get(\"q\", \"\")",
+              "start_line": 12
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "term = request.args.get(\"q\", \"\")",
+                "start_line": 12
+              },
+              {
+                "end_line": null,
+                "path": "app/services/search.py",
+                "snippet": "cross-file hop: lookup()",
+                "start_line": 4
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "sql",
+                "start_line": 8
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "cur.execute(sql)",
+                "start_line": 11
+              }
+            ]
+          },
+          "title": "SQL injection: untrusted input reaches 'sql_execute_var' sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/exporter.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/exporter.py`. Evidence line 7: return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/exporter.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/exporter.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0002",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``url`` \u2192 subprocess.check_output; path across 2 files: app/main.py:55 \u2192 app/services/exporter.py:5 \u2192 app/services/exporter.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/exporter.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``url`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+              "start_line": 55
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+                "start_line": 55
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "url",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "subprocess.check_output('wkhtmltopdf ' + url + ' /tmp/o.pdf', shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/reports.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/reports.py`. Evidence line 7: return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/reports.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/reports.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0003",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``target`` \u2192 subprocess.check_output; path across 2 files: app/main.py:19 \u2192 app/services/reports.py:5 \u2192 app/services/reports.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/reports.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``target`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "target = request.args.get(\"host\", \"\")",
+              "start_line": 19
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "target = request.args.get(\"host\", \"\")",
+                "start_line": 19
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "target",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "subprocess.check_output('ping -c 1 ' + target, shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value flows unsanitised into a path_open sink.",
+            "The sink executes/deserialises the attacker payload at app/services/storage.py:8."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 8.2,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+          "cwe": "CWE-22",
+          "description": "Deterministic detector: taint proves untrusted input reaches a path_open sink in `app/services/storage.py`. Evidence line 8: with open(os.path.join(BASE, name)) as fh:",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "path_open @ app/services/storage.py:8",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/storage.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 8 of 16",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-22 sink-family call near line 8",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-22",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N score=8.2",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0004",
+          "impact": "traversal",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Server reads or serves /etc/passwd -> path traversal confirmed.",
+            "invocation": "Supply as the filename / path parameter.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "../../../../etc/passwd"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Resolve against a fixed base directory and verify the canonical path stays inside it; reject '..' segments; prefer an allow-list of filenames.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-22): caller-tainted parameter ``name`` \u2192 open; path across 2 files: app/main.py:26 \u2192 app/services/storage.py:6 \u2192 app/services/storage.py:8; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "path_open at app/services/storage.py:8",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            },
+            "source": "caller-tainted parameter ``name`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "name = request.args.get(\"name\", \"\")",
+              "start_line": 26
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "name = request.args.get(\"name\", \"\")",
+                "start_line": 26
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "name",
+                "start_line": 6
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "open(os.path.join(BASE, name))",
+                "start_line": 8
+              }
+            ]
+          },
+          "title": "Path traversal: user-controlled path reaches a file sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies crafted input via an HTTP request (request.args / request.GET / FastAPI param).",
+            "The value flows unsanitised into the query expression.",
+            "The expression is evaluated with attacker-controlled syntax at app/main.py:34."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-1336",
+          "description": "Deterministic detector: Python taint proves untrusted input reaches a ssti sink in `app/main.py`. Evidence line 34: return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "ssti @ app/main.py:34",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/main.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 34 of 61",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-1336",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "intraprocedural flow proven in do_preview: HTTP query string -> render_template_string",
+              "kind": "ast_taint_proven"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0005",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Template expression is evaluated server-side -> SSTI -> RCE.",
+            "invocation": "Send via the relevant HTTP request field.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "{{7*7}}  (then {{config}} / {{''.__class__...}} for RCE)"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Never build a template from request input; pass user data as template CONTEXT (variables), never as the template string itself.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural",
+            "proven-flow"
+          ],
+          "taint": {
+            "attack_vector": null,
+            "proof_basis": "Tier-1 taint proven (CWE-1336): HTTP query string \u2192 render_template_string; path source@L33 \u2192 sink@L34; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "render_template_string",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            },
+            "source": "HTTP query string",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+              "start_line": 33
+            },
+            "source_origin": null,
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+                "start_line": 33
+              },
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+                "start_line": 34
+              }
+            ]
+          },
+          "title": "Server-side template injection (SSTI): untrusted input is compiled as a template",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        }
+      ],
+      "finished_at": "2026-09-19T19:23:00.834231Z",
+      "skill": "outcome_verifier",
+      "stage_id": "s8c_verify",
+      "started_at": "2026-09-19T19:23:00.834164Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    },
+    {
+      "artifacts": {
+        "_hallucination_metrics": {
+          "outcome_unverified": 0,
+          "raw_lens": 5,
+          "ungrounded_downgraded": 0,
+          "ungrounded_dropped": 0
+        },
+        "dropped_count": 0,
+        "finding_count": 5,
+        "report_md": "out-sec/repo_20260919T192300Z_report.md",
+        "report_sarif": "out-sec/repo_20260919T192300Z_report.sarif"
+      },
+      "cost_usd": 0.0,
+      "duration_seconds": 0.027590708021307364,
+      "error": null,
+      "findings": [
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via the HTTP request parameter named at this finding's taint source location.",
+            "The value is string-formatted (.format()/%/f-string/concatenation) into a SQL statement with no parameterisation.",
+            "The statement reaches the 'sql_execute_var' sink at app/services/db.py:11 and executes against the database."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.4,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+          "cwe": "CWE-89",
+          "description": "Deterministic detector: a SQL sink ('sql_execute_var') co-occurs with a query built from untrusted input in `app/services/db.py`. Evidence line 11: cur.execute(sql)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "sql_execute_var @ app/services/db.py:11",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/db.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 11 of 19",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-89 sink-family call near line 11",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-89",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L score=9.4",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0001",
+          "impact": "sqli",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Query returns all rows or raises a SQL error -> injection confirmed.",
+            "invocation": "Send via the HTTP parameter that reaches this sink (see the taint source location on this finding).",
+            "is_concrete": true,
+            "language": "",
+            "payload": "' OR '1'='1' -- "
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Use parameterised queries / bound parameters everywhere (cursor.execute(sql, params); pandas.read_sql(sql, con, params=...)). Never build SQL with .format()/%/f-strings/concatenation on request data.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-89): caller-tainted parameter ``sql`` \u2192 cur.execute; path across 3 files: app/main.py:12 \u2192 app/services/search.py:4 \u2192 app/services/db.py:8 \u2192 app/services/db.py:11; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "sql_execute_var at app/services/db.py:11",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/db.py",
+              "snippet": "    cur.execute(sql)",
+              "start_line": 11
+            },
+            "source": "caller-tainted parameter ``sql`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "term = request.args.get(\"q\", \"\")",
+              "start_line": 12
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "term = request.args.get(\"q\", \"\")",
+                "start_line": 12
+              },
+              {
+                "end_line": null,
+                "path": "app/services/search.py",
+                "snippet": "cross-file hop: lookup()",
+                "start_line": 4
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "sql",
+                "start_line": 8
+              },
+              {
+                "end_line": null,
+                "path": "app/services/db.py",
+                "snippet": "cur.execute(sql)",
+                "start_line": 11
+              }
+            ]
+          },
+          "title": "SQL injection: untrusted input reaches 'sql_execute_var' sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/exporter.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/exporter.py`. Evidence line 7: return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/exporter.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/exporter.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0002",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``url`` \u2192 subprocess.check_output; path across 2 files: app/main.py:55 \u2192 app/services/exporter.py:5 \u2192 app/services/exporter.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/exporter.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/exporter.py",
+              "snippet": "return subprocess.check_output(\"wkhtmltopdf \" + url + \" /tmp/o.pdf\", shell=True)",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``url`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+              "start_line": 55
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return exporter.to_pdf(request.args.get(\"url\", \"\"))",
+                "start_line": 55
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "url",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/exporter.py",
+                "snippet": "subprocess.check_output('wkhtmltopdf ' + url + ' /tmp/o.pdf', shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value is concatenated into a shell command (os.system/os.popen/shell=True) with no escaping.",
+            "The shell command sink executes the attacker-influenced command at app/services/reports.py:7."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-78",
+          "description": "Deterministic detector: taint proves untrusted input reaches a shell command in `app/services/reports.py`. Evidence line 7: return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "shell_command @ app/services/reports.py:7",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/reports.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 7 of 12",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-78 sink-family call near line 7",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-78",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0003",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "The injected command executes on the server -> RCE confirmed.",
+            "invocation": "Send via the relevant HTTP parameter, e.g. ...?host=127.0.0.1; id #",
+            "is_concrete": true,
+            "language": "",
+            "payload": "; id #"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Avoid the shell: pass an argument list with shell=False, or escape every argument with shlex.quote(); validate against an allow-list of permitted commands.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-78): caller-tainted parameter ``target`` \u2192 subprocess.check_output; path across 2 files: app/main.py:19 \u2192 app/services/reports.py:5 \u2192 app/services/reports.py:7; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "shell command at app/services/reports.py:7",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/reports.py",
+              "snippet": "return subprocess.check_output(\"ping -c 1 \" + target, shell=True).decode()",
+              "start_line": 7
+            },
+            "source": "caller-tainted parameter ``target`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "target = request.args.get(\"host\", \"\")",
+              "start_line": 19
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "target = request.args.get(\"host\", \"\")",
+                "start_line": 19
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "target",
+                "start_line": 5
+              },
+              {
+                "end_line": null,
+                "path": "app/services/reports.py",
+                "snippet": "subprocess.check_output('ping -c 1 ' + target, shell=True)",
+                "start_line": 7
+              }
+            ]
+          },
+          "title": "OS command injection: untrusted input reaches a shell command",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies a crafted value via an HTTP request parameter.",
+            "The value flows unsanitised into a path_open sink.",
+            "The sink executes/deserialises the attacker payload at app/services/storage.py:8."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 8.2,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+          "cwe": "CWE-22",
+          "description": "Deterministic detector: taint proves untrusted input reaches a path_open sink in `app/services/storage.py`. Evidence line 8: with open(os.path.join(BASE, name)) as fh:",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "path_open @ app/services/storage.py:8",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/services/storage.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 8 of 16",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "AST confirms a CWE-22 sink-family call near line 8",
+              "kind": "ast_sink_match"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-22",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N score=8.2",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0004",
+          "impact": "traversal",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Server reads or serves /etc/passwd -> path traversal confirmed.",
+            "invocation": "Supply as the filename / path parameter.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "../../../../etc/passwd"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Resolve against a fixed base directory and verify the canonical path stays inside it; reject '..' segments; prefer an allow-list of filenames.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural"
+          ],
+          "taint": {
+            "attack_vector": "remote",
+            "proof_basis": "Tier-1 taint proven (CWE-22): caller-tainted parameter ``name`` \u2192 open; path across 2 files: app/main.py:26 \u2192 app/services/storage.py:6 \u2192 app/services/storage.py:8; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "path_open at app/services/storage.py:8",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/services/storage.py",
+              "snippet": "with open(os.path.join(BASE, name)) as fh:",
+              "start_line": 8
+            },
+            "source": "caller-tainted parameter ``name`` [HTTP request value (attacker-controlled)]",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "name = request.args.get(\"name\", \"\")",
+              "start_line": 26
+            },
+            "source_origin": "network",
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "name = request.args.get(\"name\", \"\")",
+                "start_line": 26
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "name",
+                "start_line": 6
+              },
+              {
+                "end_line": null,
+                "path": "app/services/storage.py",
+                "snippet": "open(os.path.join(BASE, name))",
+                "start_line": 8
+              }
+            ]
+          },
+          "title": "Path traversal: user-controlled path reaches a file sink",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        },
+        {
+          "abstained": false,
+          "attack_chain": [
+            "Attacker supplies crafted input via an HTTP request (request.args / request.GET / FastAPI param).",
+            "The value flows unsanitised into the query expression.",
+            "The expression is evaluated with attacker-controlled syntax at app/main.py:34."
+          ],
+          "calibrated_confidence": null,
+          "confidence": 0.9,
+          "corroborating_tools": [],
+          "cvss_score": 9.8,
+          "cvss_score_original": null,
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "cwe": "CWE-1336",
+          "description": "Deterministic detector: Python taint proves untrusted input reaches a ssti sink in `app/main.py`. Evidence line 34: return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+          "evidence": [
+            {
+              "check": "pass",
+              "detail": "ssti @ app/main.py:34",
+              "kind": "structural_hit"
+            },
+            {
+              "check": "pass",
+              "detail": "app/main.py",
+              "kind": "file_exists"
+            },
+            {
+              "check": "pass",
+              "detail": "line 34 of 61",
+              "kind": "line_resolves"
+            },
+            {
+              "check": "pass",
+              "detail": "matched CWE-family tokens for CWE-1336",
+              "kind": "snippet_match"
+            },
+            {
+              "check": "pass",
+              "detail": "intraprocedural flow proven in do_preview: HTTP query string -> render_template_string",
+              "kind": "ast_taint_proven"
+            },
+            {
+              "check": "pass",
+              "detail": "vector=CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H score=9.8",
+              "kind": "cvss_autocomputed"
+            }
+          ],
+          "externally_corroborated": false,
+          "grounded": true,
+          "id": "F-0005",
+          "impact": "rce",
+          "locations": [
+            {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            }
+          ],
+          "poc": {
+            "dynamic": null,
+            "expected_effect": "Template expression is evaluated server-side -> SSTI -> RCE.",
+            "invocation": "Send via the relevant HTTP request field.",
+            "is_concrete": true,
+            "language": "",
+            "payload": "{{7*7}}  (then {{config}} / {{''.__class__...}} for RCE)"
+          },
+          "poc_confidence": null,
+          "poc_demonstrated": false,
+          "provenance": {
+            "model": "mock-fast",
+            "prompt_sha256": "46baa65d1604065c129ce7e8c0990fceb7d8ababdf3e1a62420db913a519f470",
+            "seed": "none",
+            "span_id": "2147efe4c87f8bc7",
+            "structural_index_sha": "ffeee1e91cf6deccf24b40e74d3f33c975dfd51d93ccd52dbd8e141f449540f3",
+            "temperature": "0.0"
+          },
+          "reachability": null,
+          "remediation": "Never build a template from request input; pass user data as template CONTEXT (variables), never as the template string itself.",
+          "revision": 1,
+          "severity": "high",
+          "skill": "deterministic_detector",
+          "stage": "s4_research",
+          "tags": [
+            "deterministic",
+            "evidence:structural",
+            "proven-flow"
+          ],
+          "taint": {
+            "attack_vector": null,
+            "proof_basis": "Tier-1 taint proven (CWE-1336): HTTP query string \u2192 render_template_string; path source@L33 \u2192 sink@L34; sanitizer missing",
+            "sanitizer_missing": true,
+            "sanitizers_observed": [],
+            "sink": "render_template_string",
+            "sink_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+              "start_line": 34
+            },
+            "source": "HTTP query string",
+            "source_location": {
+              "end_line": null,
+              "path": "app/main.py",
+              "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+              "start_line": 33
+            },
+            "source_origin": null,
+            "taint_path": [
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "tpl = request.args.get(\"tpl\", \"\")",
+                "start_line": 33
+              },
+              {
+                "end_line": null,
+                "path": "app/main.py",
+                "snippet": "return render_template_string(\"<h1>\" + tpl + \"</h1>\")",
+                "start_line": 34
+              }
+            ]
+          },
+          "title": "Server-side template injection (SSTI): untrusted input is compiled as a template",
+          "validator_rationale": null,
+          "validator_verdict": null,
+          "verification": {
+            "agreement": null,
+            "method": "deterministic",
+            "rationale": "3/5 independent signals passed (need 1): grounded, taint_complete, concrete_poc.",
+            "samples": 0,
+            "score": 0.6,
+            "signals": {
+              "concrete_poc": true,
+              "externally_corroborated": false,
+              "grounded": true,
+              "taint_complete": true,
+              "vote_confirmed": false
+            },
+            "threshold": 1,
+            "verified": true
+          },
+          "votes": []
+        }
+      ],
+      "finished_at": "2026-09-19T19:23:00.861993Z",
+      "skill": "emit",
+      "stage_id": "s9_emit",
+      "started_at": "2026-09-19T19:23:00.834399Z",
+      "tokens_in": 0,
+      "tokens_out": 0
+    }
+  ],
+  "started_at": "2026-09-19T19:23:00.499873Z",
+  "target_repo": "/ws/repo",
+  "target_sha": "f94d54462d99bb9041a4e2df92436a0465faa1ea",
+  "time_exceeded": false,
+  "tool": "codereaper",
+  "total_cost_usd": 0.0,
+  "total_seconds": 0.34,
+  "version": "0.3.0"
+}

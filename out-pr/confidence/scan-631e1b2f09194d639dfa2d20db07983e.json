@@ -1,0 +1,74 @@
+{
+ "F-0001::tier1": {
+  "scan_id": "scan-631e1b2f09194d639dfa2d20db07983e",
+  "finding_id": "F-0001",
+  "agent": "tier1",
+  "score": 0.9,
+  "band": "high",
+  "basis": "structural",
+  "source": "value-level taint proof, sanitizer-checked (confident tier is FP=0 by construction)",
+  "factors": {
+   "proven": true,
+   "cross_file": true
+  }
+ },
+ "F-0001::tier2": {
+  "scan_id": "scan-631e1b2f09194d639dfa2d20db07983e",
+  "finding_id": "F-0001",
+  "agent": "tier2",
+  "score": 0.0,
+  "band": "low",
+  "basis": "unknown",
+  "source": "no Tier-2 verdict recorded for this finding",
+  "factors": {}
+ },
+ "F-0001::exploit": {
+  "scan_id": "scan-631e1b2f09194d639dfa2d20db07983e",
+  "finding_id": "F-0001",
+  "agent": "exploit",
+  "score": 0.619,
+  "band": "medium",
+  "basis": "measured",
+  "source": "calibrated per-CWE PoC accuracy (payload, band medium)",
+  "factors": {
+   "modality": "payload",
+   "poc_attempted": true
+  }
+ },
+ "F-0002::tier1": {
+  "scan_id": "scan-631e1b2f09194d639dfa2d20db07983e",
+  "finding_id": "F-0002",
+  "agent": "tier1",
+  "score": 0.9,
+  "band": "high",
+  "basis": "structural",
+  "source": "value-level taint proof, sanitizer-checked (confident tier is FP=0 by construction)",
+  "factors": {
+   "proven": true,
+   "cross_file": true
+  }
+ },
+ "F-0002::tier2": {
+  "scan_id": "scan-631e1b2f09194d639dfa2d20db07983e",
+  "finding_id": "F-0002",
+  "agent": "tier2",
+  "score": 0.0,
+  "band": "low",
+  "basis": "unknown",
+  "source": "no Tier-2 verdict recorded for this finding",
+  "factors": {}
+ },
+ "F-0002::exploit": {
+  "scan_id": "scan-631e1b2f09194d639dfa2d20db07983e",
+  "finding_id": "F-0002",
+  "agent": "exploit",
+  "score": 0.699,
+  "band": "medium",
+  "basis": "measured",
+  "source": "calibrated per-CWE PoC accuracy (payload, band medium)",
+  "factors": {
+   "modality": "payload",
+   "poc_attempted": true
+  }
+ }
+}
