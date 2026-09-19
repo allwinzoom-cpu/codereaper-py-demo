@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "codereaper",
+          "version": "0.3.0",
+          "rules": []
+        }
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///ws/repo"
+        }
+      },
+      "results": [],
+      "properties": {
+        "run_config": {
+          "roles": {
+            "surveyor": {
+              "via": "mock",
+              "model": "mock-fast",
+              "temperature": 0.0,
+              "max_tokens": 1024,
+              "timeout": null,
+              "max_retries": 3,
+              "seed": null,
+              "num_ctx": null
+            },
+            "reporter": {
+              "via": "mock",
+              "model": "mock-fast",
+              "temperature": 0.0,
+              "max_tokens": 1024,
+              "timeout": null,
+              "max_retries": 3,
+              "seed": null,
+              "num_ctx": null
+            }
+          },
+          "gates": {
+            "voting": {
+              "enabled": false,
+              "quorum": 2,
+              "voters": []
+            },
+            "s4b_grounding_strict": false,
+            "s8b_poc_strict": false,
+            "s8c_verify_strict": false,
+            "s8c_verify_threshold": 1,
+            "seeding": {
+              "enabled": false,
+              "max_seeds": 20
+            },
+            "platt_calibration": {
+              "enabled": false,
+              "reject_below": 0.3,
+              "confirm_at_or_above": 0.7
+            }
+          },
+          "enabled_backends": [
+            "bedrock",
+            "mock",
+            "ollama",
+            "openrouter"
+          ]
+        },
+        "coverage": {
+          "source_files_parsed": 1,
+          "coverage_pct": 100.0,
+          "complete": true,
+          "by_language": {
+            "Python": 1
+          },
+          "inventory": {
+            "total_files": 1,
+            "total_loc": 4,
+            "code_loc": 4,
+            "code_files": 1,
+            "code_languages": {
+              "Python": {
+                "files": 1,
+                "loc": 4,
+                "loc_pct": 100.0
+              }
+            },
+            "excluded": {
+              "data_markup_loc": 0,
+              "data_markup_files": 0,
+              "binary_files": 0
+            },
+            "languages": {
+              "Python": {
+                "files": 1,
+                "loc": 4,
+                "loc_pct": 100.0
+              }
+            },
+            "frameworks": {
+              "Python": [
+                "Flask"
+              ]
+            }
+          },
+          "skipped": {
+            "oversize": 0,
+            "truncated_by_limit": 0,
+            "excluded": 0,
+            "symlinks": 0,
+            "dupe_configs": 0,
+            "non_source": 0
+          },
+          "total_bytes": 173
+        },
+        "budget": {
+          "max_budget_usd": 0.0,
+          "total_cost_usd": 0.0,
+          "budget_exceeded": false,
+          "stages_skipped": 0
+        },
+        "time": {
+          "max_wall_seconds": 10800.0,
+          "elapsed_seconds": 0.087,
+          "time_exceeded": false,
+          "stages_skipped": 0
+        }
+      }
+    }
+  ]
+}

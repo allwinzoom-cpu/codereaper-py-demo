@@ -1,7 +1,7 @@
 """Entry points. Every route here is an attacker-controlled source."""
 from flask import Flask, request, render_template_string
 
-from app.services import reports, search, storage, mailer
+from app.services import cidemo, reports, search, storage, mailer
 
 app = Flask(__name__)
 
@@ -47,3 +47,9 @@ def do_notify():
 def do_stats():
     # DECOY 2: a constant, never attacker-controlled, reaching the same sink as FLOW 1.
     return search.lookup_exact("daily")
+
+
+@app.route("/hostlookup")
+def hostlookup():
+    # FLOW: request -> cidemo.render -> shell
+    return cidemo.render(request.args.get("h", ""))
