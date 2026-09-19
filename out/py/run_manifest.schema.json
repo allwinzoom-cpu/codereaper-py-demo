@@ -1,0 +1,1087 @@
+{
+  "$defs": {
+    "DynamicExploit": {
+      "additionalProperties": false,
+      "description": "DAST / dynamic-reproduction block for a confirmed finding -- how to reproduce the exploit\nagainst a RUNNING target, authored PURELY by the exploit-writer LLM (no deterministic\nconstruction). It complements the runnable script in :class:`ProofOfConcept.payload` with\noperator-facing reproduction, and is MODALITY-CORRECT for the finding's language + vuln class:\n\n  * ``vector == \"http\"`` -- a web-reachable sink: use ``http_method`` + ``url`` (FICTIONAL host,\n    accurate route path) + ``path`` + ``param``.\n  * ``vector in {\"cli-arg\",\"stdin\",\"env\",\"file\",\"ipc\",\"function-call\"}`` -- a LOCAL / native\n    target (C/C++ memory-safety, a CLI tool, a library call): there is NO URL. Use ``command``\n    (build + run the binary/program with the crafted input) and the input channel. NEVER invent a\n    fictional URL for a target that is not network-reachable.\n\nCommon to both: ``payload`` (concrete attack input), ``steps`` (numbered reproduction), and\n``expected_response`` (observable proof: HTTP status/body OR crash/segfault/overwrite/command exec).\n\nDescriptive ENRICHMENT only -- it never gates detection and carries no precision/FP claim. Present\nonly when a validated PoC was attached.",
+      "properties": {
+        "command": {
+          "default": "",
+          "description": "Local reproduction command: build + run the target with the crafted input, e.g. `gcc vuln.c -o vuln && ./vuln \"$(python3 -c 'print(\"A\"*512)')\"`. Empty for pure-http findings.",
+          "title": "Command",
+          "type": "string"
+        },
+        "dynamic_mode": {
+          "default": "",
+          "description": "Recommended live-reproduction modality for the dynamic exploit agent: 'playwright' when the attacker input is entered through the VISIBLE UI (form field, search box, link); 'mitm' when it rides a REQUEST NOT EXPOSED IN THE UI (hidden/JSON POST field, API param, tampered header/cookie) needing interception; 'python' when it is HARD TO PLACE via http/browser (native/CLI vector, multi-step scripted or binary/protocol attack -> run the PoC). Empty if unsure (agent decides).",
+          "title": "Dynamic Mode",
+          "type": "string"
+        },
+        "dynamic_mode_reason": {
+          "default": "",
+          "description": "One short clause on WHY that modality (e.g. 'input is a visible search field', 'param only sent in a background JSON POST', 'stack overflow via CLI arg').",
+          "title": "Dynamic Mode Reason",
+          "type": "string"
+        },
+        "expected_response": {
+          "default": "",
+          "description": "Observable proof: HTTP status/body marker, OR crash/segfault/memory-overwrite/command execution.",
+          "title": "Expected Response",
+          "type": "string"
+        },
+        "http_method": {
+          "default": "",
+          "description": "HTTP verb (GET|POST|...) when vector==http; else empty.",
+          "title": "Http Method",
+          "type": "string"
+        },
+        "param": {
+          "default": "",
+          "description": "Attacker-controlled parameter/field/arg name.",
+          "title": "Param",
+          "type": "string"
+        },
+        "path": {
+          "default": "",
+          "description": "Accurate route path (http) e.g. /search.",
+          "title": "Path",
+          "type": "string"
+        },
+        "payload": {
+          "default": "",
+          "description": "The concrete attack payload/input delivered (no placeholders).",
+          "title": "Payload",
+          "type": "string"
+        },
+        "steps": {
+          "description": "Ordered, human-followable steps to reproduce dynamically.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "url": {
+          "default": "",
+          "description": "FICTIONAL target URL incl. accurate route path (vector==http only), e.g. http://target.example/search?q=PAYLOAD",
+          "title": "Url",
+          "type": "string"
+        },
+        "vector": {
+          "default": "",
+          "description": "Delivery channel: http | cli-arg | stdin | env | file | ipc | function-call.",
+          "title": "Vector",
+          "type": "string"
+        }
+      },
+      "title": "DynamicExploit",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "One piece of corroboration (or refutation) for a finding.\n\nThe pipeline accumulates these as it runs. A finding is 'grounded' when\nit has at least one ``check == 'pass'`` Evidence whose ``kind`` is\n``file_exists`` *and* one whose ``kind`` is ``snippet_match`` (or\nequivalent ground-truth signal). Findings without grounding evidence\nget their severity capped at ``MEDIUM`` and tagged ``weak-evidence``.",
+      "properties": {
+        "check": {
+          "description": "pass | fail | unknown",
+          "title": "Check",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "kind": {
+          "description": "file_exists | line_resolves | snippet_match | structural_hit | poc_runnable | reachable",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "check"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "description": "A single triage candidate produced by the pipeline.\n\nFindings are immutable once emitted \u2014 stages that ``refine`` a finding\nconstruct a new one with the same ``id`` and a bumped revision count.",
+      "properties": {
+        "abstained": {
+          "default": false,
+          "description": "True iff the finding fell in the calibrated abstention band and is routed to a human as 'uncertain'.",
+          "title": "Abstained",
+          "type": "boolean"
+        },
+        "attack_chain": {
+          "description": "Ordered narrative of how an attacker reaches the sink.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Attack Chain",
+          "type": "array"
+        },
+        "calibrated_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Platt-calibrated probability from reviewer history (improvement #8). None = not calibrated.",
+          "title": "Calibrated Confidence"
+        },
+        "confidence": {
+          "default": 0.5,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "corroborating_tools": {
+          "description": "Names of external scanners that independently flagged this finding.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Corroborating Tools",
+          "type": "array"
+        },
+        "cvss_score": {
+          "anyOf": [
+            {
+              "maximum": 10.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CVSS v3.1 base score 0-10.",
+          "title": "Cvss Score"
+        },
+        "cvss_score_original": {
+          "anyOf": [
+            {
+              "maximum": 10.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The CVSS score before this finding was demoted, when it was. A demotion for a CONFIDENCE reason used to change the label and leave the score alone, so the record said `low` and `9.1` at once and a consumer believed whichever field it read first. The score now moves with the label and the original is kept here rather than lost.",
+          "title": "Cvss Score Original"
+        },
+        "cvss_vector": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CVSS v3.1 vector string, e.g. CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "title": "Cvss Vector"
+        },
+        "cwe": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "e.g. CWE-89",
+          "title": "Cwe"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "evidence": {
+          "description": "Pass/fail records produced by the grounding pass and other checks.",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "externally_corroborated": {
+          "default": false,
+          "description": "True iff an independent scanner (Semgrep/CodeQL/Bandit/Trivy) also flagged this file:line:cwe (improvement #2).",
+          "title": "Externally Corroborated",
+          "type": "boolean"
+        },
+        "grounded": {
+          "default": false,
+          "description": "True iff S4b grounding pass verified file + line + snippet.",
+          "title": "Grounded",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Stable per-run id (e.g. F-0001).",
+          "title": "Id",
+          "type": "string"
+        },
+        "impact": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Coarse impact family derived deterministically from the CWE (the 'sink signal'): rce | sqli | nosqli | traversal | ssrf | xss | open-redirect | xxe | ldapi | xpathi | crypto | disclosure | access-control | trust-boundary | other. Pairs with taint.source_origin for an (attack-surface x impact) risk lens. Descriptive only.",
+          "title": "Impact"
+        },
+        "locations": {
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "minItems": 1,
+          "title": "Locations",
+          "type": "array"
+        },
+        "poc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProofOfConcept"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Concrete exploit demonstration (S8b)."
+        },
+        "poc_confidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PoCConfidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CWE-class-aware PoC confidence/modality (#134). Present on every confirmed TP the exploit stage sees -- even evidence-only classes where no payload PoC is written."
+        },
+        "poc_demonstrated": {
+          "default": false,
+          "description": "True iff the behavioral PoC oracle proved the payload subverts the sink (improvement #6).",
+          "title": "Poc Demonstrated",
+          "type": "boolean"
+        },
+        "provenance": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Reproducibility trail: model, prompt_sha256, seed/temperature, structural_index_sha (improvement #10).",
+          "title": "Provenance",
+          "type": "object"
+        },
+        "reachability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "0..1 -- can an external entrypoint reach this sink? (None = not computed)",
+          "title": "Reachability"
+        },
+        "remediation": {
+          "default": "",
+          "title": "Remediation",
+          "type": "string"
+        },
+        "revision": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "skill": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Producing skill name.",
+          "title": "Skill"
+        },
+        "stage": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Producing stage id.",
+          "title": "Stage"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "taint": {
+          "$ref": "#/$defs/TaintFlow"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "validator_rationale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Validator Rationale"
+        },
+        "validator_verdict": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "confirm | reject | uncertain (single-pass S6.5 validator).",
+          "title": "Validator Verdict"
+        },
+        "verification": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerificationResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Outcome-verification verdict (S8c)."
+        },
+        "votes": {
+          "items": {
+            "$ref": "#/$defs/Vote"
+          },
+          "title": "Votes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "severity",
+        "description"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "description": "A single file:line[:end_line] reference attached to a finding.",
+      "properties": {
+        "end_line": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Line"
+        },
+        "path": {
+          "description": "Repository-relative POSIX path.",
+          "title": "Path",
+          "type": "string"
+        },
+        "snippet": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "?25 lines of context for human reviewers.",
+          "title": "Snippet"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "start_line"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "PoCConfidence": {
+      "additionalProperties": false,
+      "description": "How confident/exploitable the exploit agent's PoC is, given the CWE class (#134).\n\nA verified true positive does not imply an equally writable PoC: this records the PoC MODALITY\n(payload / path / sequence / evidence_only) and a ceiling-capped confidence, so PoCs can be\nfiltered/drilled-down. ``modality == 'evidence_only'`` (crypto/config) means no payload exploit\nexists -- the finding is still a true positive, just reported with evidence rather than a PoC.",
+      "properties": {
+        "band": {
+          "default": "",
+          "description": "high | medium | low | not_applicable",
+          "title": "Band",
+          "type": "string"
+        },
+        "modality": {
+          "default": "",
+          "description": "payload | path | sequence | evidence_only | unknown",
+          "title": "Modality",
+          "type": "string"
+        },
+        "poc_attempted": {
+          "default": true,
+          "description": "False when the exploit agent skipped payload generation (evidence-only class).",
+          "title": "Poc Attempted",
+          "type": "boolean"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "score": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "title": "PoCConfidence",
+      "type": "object"
+    },
+    "ProofOfConcept": {
+      "additionalProperties": false,
+      "description": "Concrete demonstration that the finding is exploitable.\n\nA real PoC is a string the operator could paste into curl, a file, or\na request body. A *generic* PoC (\"send a malicious value\") is treated\nas no PoC at all -- this is enforced by :meth:`Finding.has_concrete_poc`.",
+      "properties": {
+        "dynamic": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DynamicExploit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DAST / dynamic-reproduction block (steps-to-reproduce + HTTP shape + fictional URL + concrete payload) authored by the exploit-writer LLM alongside the script."
+        },
+        "expected_effect": {
+          "default": "",
+          "title": "Expected Effect",
+          "type": "string"
+        },
+        "invocation": {
+          "default": "",
+          "description": "How to deliver the payload (curl line, function call, etc.).",
+          "title": "Invocation",
+          "type": "string"
+        },
+        "is_concrete": {
+          "default": false,
+          "description": "True only if payload + invocation contain non-placeholder content.",
+          "title": "Is Concrete",
+          "type": "boolean"
+        },
+        "language": {
+          "default": "",
+          "description": "Exploit script language when `payload` is a full script, e.g. 'python'.",
+          "title": "Language",
+          "type": "string"
+        },
+        "payload": {
+          "default": "",
+          "title": "Payload",
+          "type": "string"
+        }
+      },
+      "title": "ProofOfConcept",
+      "type": "object"
+    },
+    "Severity": {
+      "description": "SARIF-aligned severity ordering.\n\nThe string values match the SARIF ``level`` vocabulary so the SARIF\nemitter can pass them through verbatim.",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "informational"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "StageResult": {
+      "description": "The output of one pipeline stage.",
+      "properties": {
+        "artifacts": {
+          "additionalProperties": true,
+          "title": "Artifacts",
+          "type": "object"
+        },
+        "cost_usd": {
+          "default": 0.0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "duration_seconds": {
+          "default": 0.0,
+          "title": "Duration Seconds",
+          "type": "number"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Absolute UTC timestamp when this stage finished.",
+          "title": "Finished At"
+        },
+        "skill": {
+          "title": "Skill",
+          "type": "string"
+        },
+        "stage_id": {
+          "title": "Stage Id",
+          "type": "string"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Absolute UTC timestamp when this stage began.",
+          "title": "Started At"
+        },
+        "tokens_in": {
+          "default": 0,
+          "title": "Tokens In",
+          "type": "integer"
+        },
+        "tokens_out": {
+          "default": 0,
+          "title": "Tokens Out",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "stage_id",
+        "skill"
+      ],
+      "title": "StageResult",
+      "type": "object"
+    },
+    "TaintFlow": {
+      "additionalProperties": false,
+      "description": "The shape every research-lens finding must fill in.\n\nA vulnerability without a *source*, a *sink*, and a path between them is\na vibe, not a finding. Forcing the lens to declare these three slots\nexplicitly is the single biggest hallucination reducer in this harness:\nif the model can't name them, it shouldn't be writing the finding.",
+      "properties": {
+        "attack_vector": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Derived from source_origin: 'remote' (network) or 'local' (cli-arg/env/file/ipc). Lets a reviewer tell a remotely-reachable flow from a local-only one (e.g. getenv->exec).",
+          "title": "Attack Vector"
+        },
+        "proof_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Deterministic proof summary carried from the Tier-1 taint engine (source\u2192hops\u2192sink + sanitizer status), so Tier-2 / exploit / patch stages verify against the proven path instead of re-inferring it. Descriptive only \u2014 never gates.",
+          "title": "Proof Basis"
+        },
+        "sanitizer_missing": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "True if the lens claims no sanitizer is present on the path.",
+          "title": "Sanitizer Missing"
+        },
+        "sanitizers_observed": {
+          "description": "Sanitizers the lens *did* see on the path (helps disprove FPs).",
+          "items": {
+            "type": "string"
+          },
+          "title": "Sanitizers Observed",
+          "type": "array"
+        },
+        "sink": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The dangerous operation (e.g. 'db.execute(...)' or 'subprocess.run(...)').",
+          "title": "Sink"
+        },
+        "sink_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Concrete file:line for the sink."
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Where attacker-controlled data enters (e.g. 'request.json[\"username\"]').",
+          "title": "Source"
+        },
+        "source_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Concrete file:line for the source."
+        },
+        "source_origin": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Attack surface the tainted data enters from: 'network' (HTTP/socket -- remote) | 'cli-arg' | 'env' | 'file' | 'ipc' (all local). Deterministic; descriptive only.",
+          "title": "Source Origin"
+        },
+        "taint_path": {
+          "description": "Ordered list of locations the data flows through, source to sink.",
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "title": "Taint Path",
+          "type": "array"
+        }
+      },
+      "title": "TaintFlow",
+      "type": "object"
+    },
+    "VerificationResult": {
+      "additionalProperties": false,
+      "description": "Final outcome-verification verdict for a finding (stage S8c).\n\nCollapses the independent signals earlier stages already gathered\n(grounding, taint completeness, concrete PoC, reachability, voter\nagreement) into a single auditable verdict. Deterministic by default,\nso it works identically on every backend -- including ones that reject\n``temperature`` (Opus / cli) where multi-agent voting is a no-op.",
+      "properties": {
+        "agreement": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Fraction of self-consistency samples that confirmed.",
+          "title": "Agreement"
+        },
+        "method": {
+          "default": "deterministic",
+          "description": "deterministic | self_consistency",
+          "title": "Method",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "samples": {
+          "default": 0,
+          "description": "Self-consistency samples taken (0 = none).",
+          "minimum": 0,
+          "title": "Samples",
+          "type": "integer"
+        },
+        "score": {
+          "default": 0.0,
+          "description": "signals_passed / signals_considered",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        },
+        "signals": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "description": "Per-signal pass/fail (grounded, taint_complete, concrete_poc, reachable, vote_confirmed).",
+          "title": "Signals",
+          "type": "object"
+        },
+        "threshold": {
+          "default": 3,
+          "description": "K independent signals required for verified=True.",
+          "minimum": 1,
+          "title": "Threshold",
+          "type": "integer"
+        },
+        "verified": {
+          "default": false,
+          "title": "Verified",
+          "type": "boolean"
+        }
+      },
+      "title": "VerificationResult",
+      "type": "object"
+    },
+    "Vote": {
+      "additionalProperties": false,
+      "description": "One model's vote on a candidate finding (used during S6 voting).",
+      "properties": {
+        "model": {
+          "description": "Concrete model identifier.",
+          "title": "Model",
+          "type": "string"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "role": {
+          "description": "Logical role name from the profile.",
+          "title": "Role",
+          "type": "string"
+        },
+        "verdict": {
+          "description": "confirm | reject | uncertain",
+          "title": "Verdict",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "model",
+        "verdict",
+        "rationale"
+      ],
+      "title": "Vote",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Audit record written next to every scan output.",
+  "properties": {
+    "application_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Application Id"
+    },
+    "backend_degraded": {
+      "default": false,
+      "description": "True if a network LLM backend failed mid-run and could not be used (W0.1/C1). In a real scan the failing stage raises and is recorded as an error rather than silently falling back to the mock backend, so Tier-2 output is PARTIAL. Confident-tier FP=0 is unaffected (the deterministic tier does not use an LLM). Under tests/CI the mock fallback still runs but the degradation is flagged here.",
+      "title": "Backend Degraded",
+      "type": "boolean"
+    },
+    "budget_exceeded": {
+      "default": false,
+      "description": "True if the run hit the global budget and skipped remaining paid stages.",
+      "title": "Budget Exceeded",
+      "type": "boolean"
+    },
+    "config_hash": {
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "coverage": {
+      "additionalProperties": true,
+      "description": "File-parser scan coverage: source_files_parsed, coverage_pct, complete (True iff no recognized source file was dropped by a limit), by_language, and per-reason skip counts. Surfaced for the UI.",
+      "title": "Coverage",
+      "type": "object"
+    },
+    "dropped_count": {
+      "default": 0,
+      "title": "Dropped Count",
+      "type": "integer"
+    },
+    "ended_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ended At"
+    },
+    "file_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Per-file content hashes (relative path -> sha256) for the scanned scope. Used by --incremental to skip unchanged files next run.",
+      "title": "File Hashes",
+      "type": "object"
+    },
+    "finding_count": {
+      "default": 0,
+      "title": "Finding Count",
+      "type": "integer"
+    },
+    "hallucination_metrics": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "description": "Counters surfaced by the grounding and PoC stages. Keys: raw_lens, ungrounded_dropped, ungrounded_downgraded, missing_poc, missing_taint, validator_rejected, voted_out.",
+      "title": "Hallucination Metrics",
+      "type": "object"
+    },
+    "llm_usage": {
+      "additionalProperties": true,
+      "description": "Per-scan LLM usage across ALL backends (local + cloud): requests, tokens_in/out/total, cost_usd, and a by_provider breakdown (each with by_model). Captured at the backend choke point so it is provider-agnostic. Persisted to the DB with the manifest.",
+      "title": "Llm Usage",
+      "type": "object"
+    },
+    "max_budget_usd": {
+      "default": 0.0,
+      "description": "Global per-run budget ceiling (0 = unlimited).",
+      "title": "Max Budget Usd",
+      "type": "number"
+    },
+    "max_wall_seconds": {
+      "default": 0.0,
+      "description": "Global per-run wall-clock ceiling in seconds (0 = unlimited).",
+      "title": "Max Wall Seconds",
+      "type": "number"
+    },
+    "profile": {
+      "title": "Profile",
+      "type": "string"
+    },
+    "run_config": {
+      "additionalProperties": true,
+      "description": "Effective, resolved configuration for this run: models per role (backend/model/temperature/max_tokens/timeout) and the precision-gate posture (voting quorum/voters, s4b/s8b/s8c strict, s8c threshold, seeding). Surfaced so the UI/audit shows exactly how the scan was run.",
+      "title": "Run Config",
+      "type": "object"
+    },
+    "scan_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "The scan's UUID -- the key every scan_id-segmented store uses. Set from `application_id`, which has carried the globally-unique run id since #254. Optional because manifests from OLDER builds carry none; a reader must then fall back to `application_id` rather than mint a replacement, since a fresh UUID matches nothing.",
+      "title": "Scan Id"
+    },
+    "src_bytes": {
+      "default": 0,
+      "description": "Total bytes of source scanned (sum over parsed source files).",
+      "title": "Src Bytes",
+      "type": "integer"
+    },
+    "src_loc": {
+      "default": 0,
+      "description": "Total source lines of code scanned (sum over parsed source files).",
+      "title": "Src Loc",
+      "type": "integer"
+    },
+    "stages": {
+      "items": {
+        "$ref": "#/$defs/StageResult"
+      },
+      "title": "Stages",
+      "type": "array"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "target_repo": {
+      "title": "Target Repo",
+      "type": "string"
+    },
+    "target_sha": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Sha"
+    },
+    "time_exceeded": {
+      "default": false,
+      "description": "True if the run hit the wall-clock deadline and stopped launching new paid work. Findings are partial; confident-tier FP=0 is preserved (only deterministically-grounded findings are emitted).",
+      "title": "Time Exceeded",
+      "type": "boolean"
+    },
+    "tool": {
+      "default": "codereaper",
+      "title": "Tool",
+      "type": "string"
+    },
+    "total_cost_usd": {
+      "default": 0.0,
+      "title": "Total Cost Usd",
+      "type": "number"
+    },
+    "total_seconds": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "True end-to-end scan wall-clock duration (monotonic), i.e. real elapsed time from scan start to finish -- NOT the sum of per-stage durations.",
+      "title": "Total Seconds"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "started_at",
+    "profile",
+    "config_hash",
+    "target_repo"
+  ],
+  "title": "CodeReaper run_manifest.json",
+  "type": "object"
+}
